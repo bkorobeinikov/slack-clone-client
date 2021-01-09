@@ -16,7 +16,10 @@
 
         "baseUrl": ".",
         "paths": {
-            "@slack/app/*": ["app/src/*"]
+            "@app/store": ["core/src/store"],
+            "@app/store/*": ["core/src/store/*"],
+            "@app/ui/*": ["core/src/ui/*"],
+            "@app/*": ["app/src/*"]
         }
     },
     "include": ["./**/*.tsx", "./**/*.ts"],

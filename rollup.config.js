@@ -1,11 +1,13 @@
 import path from 'path';
 
 import { terser } from 'rollup-plugin-terser';
+import clear from 'rollup-plugin-clear';
 import replace from 'rollup-plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import visualize from 'rollup-plugin-visualizer';
+import styles from 'rollup-plugin-styles';
 import html from '@rollup/plugin-html';
 
 const env = process.env.NODE_ENV;
@@ -13,13 +15,17 @@ const isProduction = env === 'production';
 
 export default {
     input: 'src/clients/web/src/index.tsx',
+    preserveEntrySignatures: false,
     output: {
         dir: 'dist/web',
-        format: 'cjs',
+        format: 'es',
         sourcemap: true,
         plugins: isProduction ? [terser()] : [],
     },
     plugins: [
+        clear({
+            targets: ['dist/web'],
+        }),
         replace({
             'process.env.NODE_ENV': JSON.stringify(env),
         }),
@@ -30,6 +36,9 @@ export default {
         resolve(),
         commonjs(),
         visualize({ filename: './dist/report-web.html' }),
+        styles({
+            
+        }),
         html(),
     ],
 };
