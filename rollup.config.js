@@ -7,7 +7,7 @@ import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import visualize from 'rollup-plugin-visualizer';
-import styles from 'rollup-plugin-styles';
+import postcss from 'rollup-plugin-postcss';
 import html from '@rollup/plugin-html';
 
 const env = process.env.NODE_ENV;
@@ -36,8 +36,8 @@ export default {
         resolve(),
         commonjs(),
         visualize({ filename: './dist/report-web.html' }),
-        styles({
-            
+        postcss({
+            plugins: [require('tailwindcss'), require('autoprefixer')],
         }),
         html(),
     ],
