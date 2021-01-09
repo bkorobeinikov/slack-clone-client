@@ -1,0 +1,3 @@
+function createDom() {}
+
+export { createDom };

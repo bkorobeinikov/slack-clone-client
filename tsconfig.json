@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "rootDir": ".",
+        "declaration": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "target": "es5",
+        "lib": ["es6"],
+        "downlevelIteration": true
+    },
+    "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../dist",
+        "rootDir": ".",
+
+        "target": "es5",
+        "moduleResolution": "node",
+        "module": "esnext",
+
+        "lib": ["dom", "es5", "scripthost"],
+
+        "skipLibCheck": true,
+
+        "jsx": "react",
+
+        "baseUrl": ".",
+        "paths": {
+            "@slack/app/*": ["app/src/*"]
+        }
+    },
+    "include": ["./**/*.tsx", "./**/*.ts"],
+    "exclude": ["node_modules", "dist"]
+}
