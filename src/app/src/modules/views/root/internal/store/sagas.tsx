@@ -2,14 +2,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { bonfire } from '@app/common/core';
+import { appStore } from '@app/core';
 
 import { RootView } from '../components';
 
 function* saga() {
     const Root = React.memo(() => {
         return (
-            <Provider store={bonfire.getReduxStore()}>
+            <Provider store={appStore.getReduxStore()}>
                 <RootView />
             </Provider>
         );

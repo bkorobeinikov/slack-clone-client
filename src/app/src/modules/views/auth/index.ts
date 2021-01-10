@@ -1,8 +1,9 @@
 import * as React from 'react';
+
 import { defineModule } from '@app/store/utils';
 import { put } from '@app/store/effects';
 
-import { componentRegistry } from '@app/utils/component-registry';
+import { componentRegistry } from '@app/ui';
 
 import { registerRouteAction } from '@app/common/navigation/messages';
 

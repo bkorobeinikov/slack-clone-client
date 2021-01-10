@@ -16,7 +16,9 @@
 
         "baseUrl": ".",
         "paths": {
-            "@app/*": ["app/src/*"]
+            "@app/store": ["app/src/store"],
+            "@app/store/*": ["app/src/store/*"],
+            "@app/*": ["app/src/modules/*"]
         }
     },
     "include": ["./**/*.tsx", "./**/*.ts"],

@@ -5,11 +5,10 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { defineMsg, msgPayload } from '@app/store';
 
 import '@app/ui/styles';
+import { componentRegistry } from '@app/ui';
 
-import { componentRegistry } from '@app/utils/component-registry';
-
+import { getIsAppReady } from '@app/core/selectors';
 import { getRoutes } from '@app/common/navigation/selectors';
-import { getIsAppReady } from '@app/common/core/selectors';
 
 const View1Lazy = React.lazy(async () => {
     const { View1 } = await import('@app/views/view1/internal/components/view1');

@@ -2,6 +2,6 @@ import { createStore } from '@app/store/utils';
 
 import { moduleDef } from './def';
 
-const bonfire = createStore({ features: [moduleDef] });
+const appStore = createStore({ features: [moduleDef] });
 
-export { bonfire };
+export { appStore };
