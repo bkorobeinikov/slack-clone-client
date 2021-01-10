@@ -1,1 +1,1 @@
-export * from './internal/components';
+export { rootViewDef } from './internal/def';

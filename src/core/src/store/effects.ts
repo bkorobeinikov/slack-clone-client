@@ -11,6 +11,7 @@ import {
     cancelled,
     fork,
     all,
+    delay,
     ActionPattern,
     ForkEffect,
     PutEffect,
@@ -60,4 +61,4 @@ function put(msg: IMessage<unknown, unknown>) {
 
 export { SagaResult };
 export { take, takeEvery, takeLatest, takeLeading, put };
-export { race, call, select, cancel, cancelled, fork, all, ActionPattern, ForkEffect, PutEffect, RaceEffect, AllEffect };
+export { race, call, select, cancel, cancelled, fork, all, delay, ActionPattern, ForkEffect, PutEffect, RaceEffect, AllEffect };

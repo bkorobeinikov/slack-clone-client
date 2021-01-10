@@ -37,7 +37,7 @@ export default {
         commonjs(),
         visualize({ filename: './dist/report-web.html' }),
         postcss({
-            plugins: [require('tailwindcss'), require('autoprefixer')],
+            plugins: [require('tailwindcss')('./tailwind.config.js'), require('autoprefixer')],
         }),
         html(),
     ],

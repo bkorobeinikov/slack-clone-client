@@ -1,17 +1,22 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import './shim';
 
-import { RootView } from '@app/views/root';
+import { defineModule } from '@app/bonfire/features';
 
-const Root = React.memo(() => {
-    return (
-        <div>
-            <RootView />
-        </div>
-    );
-});
+import { bonfire } from '@app/common/core';
+import { initializeAppAction } from '@app/common/core/messages';
 
-const rootEl = document.createElement('div');
-document.body.append(rootEl);
+import { authViewDef } from '@app/views/auth';
+import { rootViewDef } from '@app/views/root';
+import { put } from '@app/store/effects';
 
-ReactDOM.render(<Root />, rootEl);
+bonfire.addFeature(authViewDef);
+bonfire.addFeature(rootViewDef);
+
+bonfire.addFeature(
+    defineModule({
+        name: 'app.clients.web',
+        saga: function* () {
+            yield put(initializeAppAction({}));
+        },
+    }),
+);

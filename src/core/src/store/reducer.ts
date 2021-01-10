@@ -10,13 +10,15 @@ type IReducersMap<TState> = {
     [K in keyof TState]: IReducer<TState[K]>;
 };
 
-interface IReducerHandler<TState, TMsgDef extends AnyMessageDef> {
+interface IReducerMutator<TState, TMsgDef extends AnyMessageDef> {
     msgDef: TMsgDef;
     mutate: (state: TState, msg: ExtractMessage<TMsgDef>) => TState;
 }
 
-function createReducer<TState>(initialState: TState, handlers: IReducerHandler<TState, AnyMessageDef>[]): IReducer<TState> {
-    const handlersMap = handlers.reduce((acc: { [msgType: string]: IReducerHandler<TState, AnyMessageDef> }, h) => {
+type ExtractReducerState<TReducer> = TReducer extends IReducer<infer TState> ? TState : never;
+
+function defineReducer<TState>(initialState: TState, handlers: IReducerMutator<TState, AnyMessageDef>[]): IReducer<TState> {
+    const handlersMap = handlers.reduce((acc: { [msgType: string]: IReducerMutator<TState, AnyMessageDef> }, h) => {
         if (acc[h.msgDef.type.toString()]) {
             // only one handler per MessageDef
             throw new Error(`handler already defined for message '${h.msgDef.type}'`);
@@ -35,18 +37,18 @@ function createReducer<TState>(initialState: TState, handlers: IReducerHandler<T
     };
 }
 
-function createReducerHandler<TState, TMsgDef extends AnyMessageDef>(
+function combineReducers<TState>(reducers: IReducersMap<TState>): IReducer<TState> {
+    return reduxCombineReducers(reducers);
+}
+
+function onMsg<TState, TMsgDef extends AnyMessageDef>(
     msgDef: TMsgDef,
     mutate: (state: TState, msg: ExtractMessage<TMsgDef>) => TState,
-): IReducerHandler<TState, TMsgDef> {
+): IReducerMutator<TState, TMsgDef> {
     return {
         msgDef,
         mutate,
     };
 }
 
-function combineReducers<TState>(reducers: IReducersMap<TState>): IReducer<TState> {
-    return reduxCombineReducers(reducers);
-}
-
-export { IReducer, IReducersMap, IReducerHandler, createReducer, createReducerHandler, combineReducers };
+export { IReducer, IReducersMap, IReducerMutator, ExtractReducerState, defineReducer, combineReducers, onMsg };

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { msgDef, payloadDef } from '@app/store';
+import { defineMsg, msgPayload } from '@app/store';
 
 import '../styles';
 
-const created = msgDef('CREATED1', payloadDef<{}>());
+const created = defineMsg('CREATED1', msgPayload<{}>());
 
 const View1 = React.memo(() => {
     console.log(created);
