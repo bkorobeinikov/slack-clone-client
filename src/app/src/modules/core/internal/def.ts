@@ -1,11 +1,10 @@
 import { defineModule } from '@app/store/utils';
 
-import { MODULE_COMMON_CORE } from './constants';
 import { reducer } from './store/reducer';
 import { saga } from './store/sagas';
 
 const moduleDef = defineModule({
-    name: MODULE_COMMON_CORE,
+    name: 'app.core',
     reducer: reducer,
     saga: saga,
 });

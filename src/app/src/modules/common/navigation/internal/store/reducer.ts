@@ -1,8 +1,8 @@
 import { defineReducer, onMsg } from '@app/store';
-import { registerRouteAction } from './messages';
 
 import keyBy from 'lodash/keyBy';
 
+import { registerRouteAction } from './messages';
 import { IRoute } from './models/route';
 
 interface IState {
