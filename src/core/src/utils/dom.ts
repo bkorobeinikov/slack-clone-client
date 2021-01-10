@@ -1,3 +1,0 @@
-function createDom() {}
-
-export { createDom };

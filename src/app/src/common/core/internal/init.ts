@@ -1,7 +1,7 @@
-import { makeBonfire } from '@app/bonfire';
+import { createStore } from '@app/store/utils';
 
 import { moduleDef } from './def';
 
-const bonfire = makeBonfire({ features: [moduleDef] });
+const bonfire = createStore({ features: [moduleDef] });
 
 export { bonfire };

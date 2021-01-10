@@ -1,4 +1,4 @@
-import { defineModule } from '@app/bonfire/features';
+import { defineModule } from '@app/store/utils';
 
 import { saga } from './store/sagas';
 

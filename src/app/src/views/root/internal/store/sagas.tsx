@@ -9,7 +9,7 @@ import { RootView } from '../components';
 function* saga() {
     const Root = React.memo(() => {
         return (
-            <Provider store={bonfire.getStore()}>
+            <Provider store={bonfire.getReduxStore()}>
                 <RootView />
             </Provider>
         );

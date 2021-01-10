@@ -1,4 +1,4 @@
-import { defineReducer, onMsg } from '@app/store/reducer';
+import { defineReducer, onMsg } from '@app/store';
 
 import { appReadyEvent } from './messages';
 

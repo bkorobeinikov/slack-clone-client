@@ -1,4 +1,4 @@
-import { defineModule } from '@app/bonfire/features';
+import { defineModule } from '@app/store/utils';
 
 import { MODULE_COMMON_CORE } from './constants';
 import { reducer } from './store/reducer';

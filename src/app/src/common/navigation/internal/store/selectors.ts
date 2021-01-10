@@ -1,10 +1,8 @@
-import { createSelector } from 'reselect';
-
-import { createModuleStateSelector } from '@app/utils/store';
+import { createSelector, createSelectorEx } from '@app/store';
 
 import { moduleDef } from '../def';
 
-const getState = createModuleStateSelector(moduleDef);
+const getState = createSelectorEx(moduleDef);
 
 const getRoutes = createSelector(getState, state => state.routes);
 

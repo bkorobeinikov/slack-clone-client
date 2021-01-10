@@ -16,11 +16,6 @@
 
         "baseUrl": ".",
         "paths": {
-            "@app/store": ["core/src/store"],
-            "@app/store/*": ["core/src/store/*"],
-            "@app/bonfire": ["core/src/bonfire"],
-            "@app/bonfire/*": ["core/src/bonfire/*"],
-            "@app/ui/*": ["core/src/ui/*"],
             "@app/*": ["app/src/*"]
         }
     },

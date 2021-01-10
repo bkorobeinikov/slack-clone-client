@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { defineModule } from '@app/bonfire/features';
+import { defineModule } from '@app/store/utils';
 import { put } from '@app/store/effects';
 
 import { componentRegistry } from '@app/utils/component-registry';

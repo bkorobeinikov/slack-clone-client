@@ -1,4 +1,5 @@
-import { defineReducer } from '@app/store/reducer';
+import { defineReducer } from '@app/store';
+
 import { IUser } from './models';
 
 interface IState {
