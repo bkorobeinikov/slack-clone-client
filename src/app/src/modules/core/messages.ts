@@ -4,7 +4,7 @@ import { asReadOnly } from '@app/store';
 
 import { initializeAppAction, appReadyEvent, initializeAppDoneEvent } from './internal/store/messages';
 
-const appReadyEventReadOnly = asReadOnly(appReadyEvent);
 const initializeAppDoneEventReadOnly = asReadOnly(initializeAppDoneEvent);
+const appReadyEventReadOnly = asReadOnly(appReadyEvent);
 
-export { initializeAppAction, appReadyEventReadOnly as appReadyEvent, initializeAppDoneEventReadOnly as initializeAppDoneEvent };
+export { initializeAppAction, initializeAppDoneEventReadOnly as initializeAppDoneEvent, appReadyEventReadOnly as appReadyEvent };
