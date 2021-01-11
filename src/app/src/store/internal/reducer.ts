@@ -12,13 +12,15 @@ type IReducersMap<TState> = {
 
 interface IReducerMutator<TState, TMsgDef extends AnyMessageDef> {
     msgDef: TMsgDef;
-    mutate: (state: TState, msg: ExtractMessage<TMsgDef>) => TState;
+    mutate: (state: Readonly<TState>, msg: ExtractMessage<TMsgDef>) => TState;
 }
 
 type ExtractReducerState<TReducer> = TReducer extends IReducer<infer TState> ? TState : never;
 
-function defineReducer<TState>(initialState: TState, handlers: IReducerMutator<TState, AnyMessageDef>[]): IReducer<TState> {
-    const handlersMap = handlers.reduce((acc: { [msgType: string]: IReducerMutator<TState, AnyMessageDef> }, h) => {
+type Exact<T, U> = T extends U ? (Exclude<keyof T, keyof U> extends never ? T : never) : never;
+
+function defineReducer<TState>(initialState: TState, mutators: IReducerMutator<TState, AnyMessageDef>[]): IReducer<TState> {
+    const map = mutators.reduce((acc: { [msgType: string]: IReducerMutator<TState, AnyMessageDef> }, h) => {
         if (acc[h.msgDef.type.toString()]) {
             // only one handler per MessageDef
             throw new Error(`handler already defined for message '${h.msgDef.type}'`);
@@ -29,8 +31,8 @@ function defineReducer<TState>(initialState: TState, handlers: IReducerMutator<T
     }, {});
 
     return (state = initialState, msg: AnyMessage): TState => {
-        if (handlersMap.hasOwnProperty(msg.type)) {
-            return handlersMap[msg.type].mutate(state, msg);
+        if (map[msg.type]) {
+            return map[msg.type].mutate(state, msg);
         } else {
             return state;
         }
@@ -41,9 +43,9 @@ function combineReducers<TState>(reducers: IReducersMap<TState>): IReducer<TStat
     return reduxCombineReducers(reducers);
 }
 
-function onMsg<TState, TMsgDef extends AnyMessageDef>(
+function mutate<TState, TMutateResult, TMsgDef extends AnyMessageDef>(
     msgDef: TMsgDef,
-    mutate: (state: TState, msg: ExtractMessage<TMsgDef>) => TState,
+    mutate: (state: Readonly<TState>, msg: ExtractMessage<TMsgDef>) => Exact<TMutateResult, TState>,
 ): IReducerMutator<TState, TMsgDef> {
     return {
         msgDef,
@@ -51,4 +53,4 @@ function onMsg<TState, TMsgDef extends AnyMessageDef>(
     };
 }
 
-export { IReducer, IReducersMap, IReducerMutator, ExtractReducerState, defineReducer, combineReducers, onMsg };
+export { IReducer, IReducersMap, IReducerMutator, ExtractReducerState, defineReducer, combineReducers, mutate };

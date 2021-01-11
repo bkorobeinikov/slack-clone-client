@@ -38,15 +38,15 @@ export interface IStoreOptions {
 export function createStore(options: IStoreOptions): IStore {
     const features = [...options.features];
 
-    const reducers: IReducersMap<any> = {};
+    const reducers: IReducersMap<Record<string, unknown>> = {};
     const sagas: { [featureName: string]: Task } = {};
 
     const initialReducers = combineReducers({ none: (state = 0) => state });
-    const initialState: any = {};
+    const initialState: unknown = {};
 
     const sagaRuntime = createSagaMiddleware();
 
-    const composeEnhancers = (globalThis as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ as typeof compose) || compose;
     const store = createReduxStore(initialReducers, initialState, composeEnhancers(applyMiddleware(sagaRuntime)));
 
     // register reducers

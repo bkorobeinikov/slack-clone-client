@@ -3,10 +3,11 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import { appStore } from '@app/core';
+import { SagaResult } from '@app/store/effects';
 
 import { RootView } from '../components';
 
-function* saga() {
+function* saga(): SagaResult<void> {
     const Root = React.memo(() => {
         return (
             <Provider store={appStore.getReduxStore()}>
@@ -19,6 +20,8 @@ function* saga() {
     document.body.append(rootEl);
 
     ReactDOM.render(<Root />, rootEl);
+
+    yield true;
 }
 
 export { saga };

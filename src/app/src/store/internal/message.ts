@@ -29,7 +29,7 @@ const defineMsg = <TType, TPayload>(type: TType, _payload: TPayload): IMessageDe
     return msgCreator;
 };
 
-const msgPayload = <TPayload>(_payload?: TPayload): TPayload => null;
+const msgPayload = <TPayload = Record<string, never>>(_payload?: TPayload): TPayload => null as never;
 
 function asReadOnly<TType, TPayload>(msgDef: IMessageDef<TType, TPayload>): IMessageDefReadOnly<TType, TPayload> {
     return {
@@ -38,7 +38,7 @@ function asReadOnly<TType, TPayload>(msgDef: IMessageDef<TType, TPayload>): IMes
 }
 
 function ofMsgDef<TDef extends AnyMessageDef>(msgDef: TDef, msg: AnyMessage): msg is ExtractMessage<TDef> {
-    if (msg.type === (msgDef.type as any)) {
+    if (msg.type === msgDef.type) {
         return true;
     }
 
@@ -47,7 +47,10 @@ function ofMsgDef<TDef extends AnyMessageDef>(msgDef: TDef, msg: AnyMessage): ms
 
 function msgSaga<T extends AnyMessageDef>(msgDef: T, handler: (msg: ExtractMessage<T>) => void): (msg: ExtractMessage<T>) => void;
 function msgSaga<T extends AnyMessageDef[]>(msgDefs: T, handler: (msgs: ExtractMessage<T>) => void): (msgs: ExtractMessage<T>) => void;
-function msgSaga(_msgDef: any, handler: (msg: any) => void) {
+function msgSaga(
+    _msgDef: AnyMessageDef | AnyMessageDef[],
+    handler: (msg: ExtractMessage<AnyMessageDef | AnyMessageDef[]>) => void,
+): (msg: ExtractMessage<AnyMessageDef | AnyMessageDef[]>) => void {
     return handler;
 }
 

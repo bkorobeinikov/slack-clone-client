@@ -9,6 +9,7 @@ import { componentRegistry } from '@app/ui';
 
 import { getIsAppReady } from '@app/core/selectors';
 import { getRoutes } from '@app/common/navigation/selectors';
+import { getAppConfig } from '@app/core/internal/store/selectors';
 
 const View1Lazy = React.lazy(async () => {
     const { View1 } = await import('@app/views/view1/internal/components/view1');
@@ -22,7 +23,7 @@ const View2Lazy = React.lazy(async () => {
     return { default: View2 };
 });
 
-const created = defineMsg('CREATEDRoot', msgPayload<{}>());
+const created = defineMsg('CREATEDRoot', msgPayload());
 
 const RootView = React.memo(() => {
     const [showView1, setShowView1] = React.useState(false);
@@ -30,6 +31,7 @@ const RootView = React.memo(() => {
 
     console.log(created);
 
+    const appConfig = useSelector(getAppConfig);
     const ready = useSelector(getIsAppReady);
     const routes = useSelector(getRoutes);
 
@@ -39,10 +41,10 @@ const RootView = React.memo(() => {
 
     return (
         <div>
-            <Router>
+            <Router basename={appConfig.basename}>
                 <Switch>
                     {routes.map(r => {
-                        const View = componentRegistry.getComponent(r.viewComponentName);
+                        const View = componentRegistry.getComponent(r.viewComponentName) as React.ComponentClass;
                         return (
                             <Route key={r.path} path={r.path}>
                                 <React.Suspense fallback={null}>

@@ -19,7 +19,7 @@ import {
     AllEffect,
 } from 'redux-saga/effects';
 
-import { AnyMessageDef, ExtractMessage, IMessage } from './message';
+import { AnyMessage, AnyMessageDef, ExtractMessage } from './message';
 
 type SagaResult<TResult> = Generator<unknown, TResult>;
 
@@ -33,29 +33,38 @@ function defToPattern(msgDef: AnyMessageDef | AnyMessageDef[]): ActionPattern {
 
 function take<T extends AnyMessageDef>(msgDef: T): SagaResult<ExtractMessage<T>>;
 function take<T extends AnyMessageDef[]>(msgDefs: T): SagaResult<ExtractMessage<T>>;
-function take(msgDef: AnyMessageDef | AnyMessageDef[]): any {
+function take(msgDef: AnyMessageDef | AnyMessageDef[]): unknown {
     return sagaTake(defToPattern(msgDef));
 }
 
 function takeEvery<T extends AnyMessageDef>(msgDef: T, worker: (msg: ExtractMessage<T>) => void): ForkEffect<never>;
 function takeEvery<T extends AnyMessageDef[]>(msgDefs: T, worker: (msgs: ExtractMessage<T>) => void): ForkEffect<never>;
-function takeEvery(msgDef: AnyMessageDef | AnyMessageDef[], worker: (msgs: any) => void): ForkEffect<never> {
+function takeEvery(
+    msgDef: AnyMessageDef | AnyMessageDef[],
+    worker: (msgs: ExtractMessage<AnyMessageDef | AnyMessageDef[]>) => void,
+): ForkEffect<never> {
     return sagaTakeEvery(defToPattern(msgDef), worker);
 }
 
 function takeLatest<T extends AnyMessageDef>(msgDef: T, worker: (msg: ExtractMessage<T>) => void): ForkEffect<never>;
 function takeLatest<T extends AnyMessageDef[]>(msgDefs: T, worker: (msgs: ExtractMessage<T>) => void): ForkEffect<never>;
-function takeLatest(msgDef: AnyMessageDef | AnyMessageDef[], worker: (msgs: any) => void): ForkEffect<never> {
+function takeLatest(
+    msgDef: AnyMessageDef | AnyMessageDef[],
+    worker: (msgs: ExtractMessage<AnyMessageDef | AnyMessageDef[]>) => void,
+): ForkEffect<never> {
     return sagaTakeLatest(defToPattern(msgDef), worker);
 }
 
 function takeLeading<T extends AnyMessageDef>(msgDef: T, worker: (msg: ExtractMessage<T>) => void): ForkEffect<never>;
 function takeLeading<T extends AnyMessageDef[]>(msgDefs: T, worker: (msgs: ExtractMessage<T>) => void): ForkEffect<never>;
-function takeLeading(msgDef: AnyMessageDef | AnyMessageDef[], worker: (msgs: any) => void): ForkEffect<never> {
+function takeLeading(
+    msgDef: AnyMessageDef | AnyMessageDef[],
+    worker: (msgs: ExtractMessage<AnyMessageDef | AnyMessageDef[]>) => void,
+): ForkEffect<never> {
     return sagaTakeLeading(defToPattern(msgDef), worker);
 }
 
-function put(msg: IMessage<unknown, unknown>) {
+function put(msg: AnyMessage): PutEffect<AnyMessage> {
     return sagaPut(msg);
 }
 

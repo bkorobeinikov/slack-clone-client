@@ -4,7 +4,7 @@ import { defineMsg, msgPayload } from '@app/store';
 
 import '../styles';
 
-const created = defineMsg('CREATED2', msgPayload<{}>());
+const created = defineMsg('CREATED2', msgPayload());
 
 const View2 = React.memo(() => {
     console.log(created);

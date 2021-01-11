@@ -4,6 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 import clear from 'rollup-plugin-clear';
 import replace from 'rollup-plugin-replace';
 import typescript from '@rollup/plugin-typescript';
+import eslint from '@rollup/plugin-eslint';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import visualize from 'rollup-plugin-visualizer';
@@ -23,6 +24,7 @@ export default {
         plugins: isProduction ? [terser()] : [],
     },
     plugins: [
+        eslint('./.eslintrc.js'),
         clear({
             targets: ['dist/web'],
         }),

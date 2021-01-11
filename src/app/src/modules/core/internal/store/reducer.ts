@@ -1,17 +1,27 @@
-import { defineReducer, onMsg } from '@app/store';
+import { defineReducer, mutate } from '@app/store';
 
-import { appReadyEvent } from './messages';
+import { appReadyEvent, initializeAppDoneEvent } from './messages';
+import { IAppConfig } from './models';
 
 interface IState {
+    appConfig: IAppConfig;
+
     ready: boolean;
 }
 
 const initialState: IState = {
+    appConfig: null,
     ready: false,
 };
 
-const reducer = defineReducer(initialState, [
-    onMsg(appReadyEvent, state => {
+const reducer = defineReducer<IState>(initialState, [
+    mutate(initializeAppDoneEvent, (state, { payload }) => {
+        return {
+            ...state,
+            appConfig: payload.appConfig,
+        };
+    }),
+    mutate(appReadyEvent, state => {
         return {
             ...state,
             ready: true,

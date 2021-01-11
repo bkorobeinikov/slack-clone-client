@@ -1,4 +1,4 @@
-import { defineReducer, onMsg } from '@app/store';
+import { defineReducer, mutate } from '@app/store';
 
 import keyBy from 'lodash/keyBy';
 
@@ -14,7 +14,7 @@ const initialState: IState = {
 };
 
 const reducer = defineReducer(initialState, [
-    onMsg(registerRouteAction, (state, msg) => {
+    mutate(registerRouteAction, (state, msg) => {
         const { routes: routesToAdd } = msg.payload;
 
         const routes = [...state.routes];
