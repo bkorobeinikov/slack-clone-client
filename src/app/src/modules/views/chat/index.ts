@@ -1,10 +1,14 @@
 import * as React from 'react';
 
+import { put } from '@app/store/effects';
 import { defineModule } from '@app/store/utils';
 
 import { componentRegistry } from '@app/ui';
-import { put } from '@app/store/effects';
+
 import { registerRouteAction } from '@app/common/navigation/messages';
+
+import { chatRouteDef } from './internal/routing';
+import { LAZY_FEATURE_VIEWS_CHAT_NAME, ROUTING_INITIAL_COMPONENT_NAME } from './internal/constants';
 
 const ChatViewLazy = React.lazy(async () => {
     const { ChatView } = await import('./internal/components');
@@ -13,17 +17,12 @@ const ChatViewLazy = React.lazy(async () => {
 });
 
 const chatViewDef = defineModule({
-    name: 'app.views.chat.lazy',
+    name: LAZY_FEATURE_VIEWS_CHAT_NAME,
     saga: function* () {
-        componentRegistry.addComponent('app.views.chat.lazy', ChatViewLazy);
+        componentRegistry.addComponent(ROUTING_INITIAL_COMPONENT_NAME, ChatViewLazy);
         yield put(
             registerRouteAction({
-                routes: [
-                    {
-                        path: '/chat',
-                        viewComponentName: 'app.views.chat.lazy',
-                    },
-                ],
+                routes: [chatRouteDef],
             }),
         );
     },

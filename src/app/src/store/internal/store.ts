@@ -1,10 +1,12 @@
-import { createStore as createReduxStore, compose, applyMiddleware, Store } from 'redux';
+import { createStore as createReduxStore, compose, applyMiddleware, Store, Middleware } from 'redux';
 import createSagaMiddleware, { Task } from 'redux-saga';
 
 import isEmpty from 'lodash/isEmpty';
 
 import { IReducer, IReducersMap, combineReducers } from './reducer';
 import { SagaResult } from './effects';
+import { AnyMessage } from './message';
+import { createDynamicMiddlewares } from './middlewares';
 
 export interface IStoreModuleDefOptions<TState> {
     name: string;
@@ -27,12 +29,13 @@ export function defineModule<TState = void>(options: IStoreModuleDefOptions<TSta
 }
 
 export interface IStore {
-    getReduxStore(): Store;
-    addFeature(feature: IStoreModuleDef): void;
+    getReduxStore(): Store<Record<string, unknown>, AnyMessage>;
+    addFeature<TState>(feature: IStoreModuleDef<TState>): void;
+    addMiddlware(middlware: Middleware): void;
 }
 
 export interface IStoreOptions {
-    features: IStoreModuleDef[];
+    features: IStoreModuleDef<unknown>[];
 }
 
 export function createStore(options: IStoreOptions): IStore {
@@ -41,13 +44,14 @@ export function createStore(options: IStoreOptions): IStore {
     const reducers: IReducersMap<Record<string, unknown>> = {};
     const sagas: { [featureName: string]: Task } = {};
 
-    const initialReducers = combineReducers({ none: (state = 0) => state });
-    const initialState: unknown = {};
+    const initialReducers = combineReducers<Record<string, unknown>>({ none: (state = 0) => state });
+    const initialState: Record<string, unknown> = { none: 0 };
 
     const sagaRuntime = createSagaMiddleware();
+    const dynamicMiddlwares = createDynamicMiddlewares();
 
     const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ as typeof compose) || compose;
-    const store = createReduxStore(initialReducers, initialState, composeEnhancers(applyMiddleware(sagaRuntime)));
+    const store = createReduxStore(initialReducers, initialState, composeEnhancers(applyMiddleware(sagaRuntime, dynamicMiddlwares.enhancer)));
 
     // register reducers
     features.forEach(fDef => {
@@ -69,7 +73,7 @@ export function createStore(options: IStoreOptions): IStore {
 
     return {
         getReduxStore: () => store,
-        addFeature: (feature: IStoreModuleDef) => {
+        addFeature: feature => {
             if (feature.reducer) {
                 reducers[feature.name] = feature.reducer;
                 store.replaceReducer(combineReducers(reducers));
@@ -78,6 +82,9 @@ export function createStore(options: IStoreOptions): IStore {
             if (feature.saga) {
                 sagas[feature.name] = sagaRuntime.run(feature.saga);
             }
+        },
+        addMiddlware: (middlware: Middleware) => {
+            dynamicMiddlwares.addMiddleware(middlware);
         },
     };
 }

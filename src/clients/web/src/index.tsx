@@ -8,17 +8,19 @@ import { initializeAppAction } from '@app/core/messages';
 
 import { chatViewDef } from '@app/views/chat';
 import { authViewDef } from '@app/views/auth';
+import { homeViewDef } from '@app/views/home';
 import { rootViewDef } from '@app/views/root';
 
 appStore.addFeature(chatViewDef);
 appStore.addFeature(authViewDef);
+appStore.addFeature(homeViewDef);
 appStore.addFeature(rootViewDef);
 
 appStore.addFeature(
     defineModule({
         name: 'app.clients.web',
         saga: function* () {
-            yield put(initializeAppAction({ options: { basename: 'dist/web' } }));
+            yield put(initializeAppAction({ options: {} }));
         },
     }),
 );

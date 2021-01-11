@@ -1,3 +1,3 @@
 import './internal/init';
 
-export { getIsAppReady } from './internal/store/selectors';
+export { getAppConfig, getIsAppReady } from './internal/store/selectors';

@@ -11,14 +11,18 @@ interface IMessageDef<TType, TPayload> extends IMessageDefReadOnly<TType, TPaylo
     (payload: TPayload): IMessage<TType, TPayload>;
 }
 
-type AnyMessageDef = IMessageDef<string, unknown>;
+type AnyMessageDef = IMessageDefReadOnly<string, unknown>;
 type AnyMessage = IMessage<string, unknown>;
 
 type ExtractMessage<TMessageDef> = TMessageDef extends Array<infer TInnerDefs>
     ? TInnerDefs extends IMessageDef<infer TType, infer TPayload>
         ? IMessage<TType, TPayload>
+        : TMessageDef extends IMessageDefReadOnly<infer TType, infer TPayload>
+        ? IMessage<TType, TPayload>
         : never
     : TMessageDef extends IMessageDef<infer TType, infer TPayload>
+    ? IMessage<TType, TPayload>
+    : TMessageDef extends IMessageDefReadOnly<infer TType, infer TPayload>
     ? IMessage<TType, TPayload>
     : never;
 

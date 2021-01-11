@@ -1,9 +1,16 @@
 import { defineMsg, msgPayload } from '@app/store';
-import { IRoute } from './models/route';
+import { IRouteDef } from './models/routing';
 
 export const registerRouteAction = defineMsg(
     'app/common/navigation/register_route',
     msgPayload<{
-        routes: IRoute[];
+        routes: IRouteDef[];
+    }>(),
+);
+
+export const navigateTo = defineMsg(
+    'app/common/navigation/navigate_to',
+    msgPayload<{
+        path: string;
     }>(),
 );

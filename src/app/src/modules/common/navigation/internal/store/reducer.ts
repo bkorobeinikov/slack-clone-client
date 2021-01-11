@@ -3,10 +3,10 @@ import { defineReducer, mutate } from '@app/store';
 import keyBy from 'lodash/keyBy';
 
 import { registerRouteAction } from './messages';
-import { IRoute } from './models/route';
+import { IRouteDef } from './models';
 
 interface IState {
-    routes: IRoute[];
+    routes: IRouteDef[];
 }
 
 const initialState: IState = {

@@ -1,3 +1,3 @@
 import './internal/init';
 
-export { registerRouteAction } from './internal/store/messages';
+export { registerRouteAction, navigateTo } from './internal/store/messages';

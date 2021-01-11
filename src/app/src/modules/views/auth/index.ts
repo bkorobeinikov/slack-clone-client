@@ -7,27 +7,23 @@ import { componentRegistry } from '@app/ui';
 
 import { registerRouteAction } from '@app/common/navigation/messages';
 
+import { LAZY_FEATURE_VIEWS_AUTH_NAME } from './internal/constants';
+import { authRouteDef } from './internal/routing';
+
 const AuthViewLazy = React.lazy(async () => {
-    const { AuthView } = await import('@app/views/auth/internal/components');
+    const { AuthView } = await import('./internal/components');
 
     return { default: AuthView };
 });
 
 const authViewDef = defineModule({
-    name: 'app.views.auth.lazy',
+    name: LAZY_FEATURE_VIEWS_AUTH_NAME,
     saga: function* () {
-        const viewName = 'app.view.auth.view';
-
-        componentRegistry.addComponent(viewName, AuthViewLazy);
+        componentRegistry.addComponent(LAZY_FEATURE_VIEWS_AUTH_NAME, AuthViewLazy);
 
         yield put(
             registerRouteAction({
-                routes: [
-                    {
-                        path: '/',
-                        viewComponentName: viewName,
-                    },
-                ],
+                routes: [authRouteDef],
             }),
         );
     },

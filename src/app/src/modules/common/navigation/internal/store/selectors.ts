@@ -1,8 +1,9 @@
-import { createSelector, createSelectorEx } from '@app/store';
+import { createSelector, defineFeatureSelector } from '@app/store';
 
-import { moduleDef } from '../def';
+import { FEATURE_COMMON_NAVIGATION_NAME } from '../constants';
+import { reducer } from './reducer';
 
-const getState = createSelectorEx(moduleDef);
+const getState = defineFeatureSelector(FEATURE_COMMON_NAVIGATION_NAME, reducer);
 
 const getRoutes = createSelector(getState, state => state.routes);
 

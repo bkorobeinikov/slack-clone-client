@@ -2,7 +2,7 @@ import { Reducer, combineReducers as reduxCombineReducers } from 'redux';
 
 import { AnyMessage, AnyMessageDef, ExtractMessage } from './message';
 
-interface IReducer<TState> extends Reducer {
+interface IReducer<TState> extends Reducer<TState, AnyMessage> {
     (state: TState, msg: AnyMessage): TState;
 }
 

@@ -6,7 +6,7 @@ import {
     race,
     put as sagaPut,
     call,
-    select,
+    select as sagaSelect,
     cancel,
     cancelled,
     fork,
@@ -66,6 +66,11 @@ function takeLeading(
 
 function put(msg: AnyMessage): PutEffect<AnyMessage> {
     return sagaPut(msg);
+}
+
+function* select<TResult, Fn extends (state: unknown, ...args: unknown[]) => TResult>(selector: Fn): SagaResult<ReturnType<Fn>> {
+    const result = (yield sagaSelect(selector as never)) as ReturnType<Fn>;
+    return result;
 }
 
 export { SagaResult };

@@ -15,4 +15,7 @@ export const initializeAppDoneEvent = defineMsg(
     }>(),
 );
 
+export const featureBootstrapBeganEvent = defineMsg('app/core/feature_bootstrap_began', msgPayload<{ featureName: string }>());
+export const featureBootstrapDoneEvent = defineMsg('app/core/feature_bootstrap_done', msgPayload<{ featureName: string }>());
+
 export const appReadyEvent = defineMsg('app/core/app_ready', msgPayload());

@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
 
-import { ExtractReducerState } from './reducer';
-import { IStoreModuleDef } from './store';
+import { ExtractReducerState, IReducer } from './reducer';
 
 export { createSelector };
-export function createSelectorEx<TState = void>(
-    moduleDef: IStoreModuleDef<TState>,
-): (store: Record<string, unknown>) => ExtractReducerState<IStoreModuleDef<TState>['reducer']> {
-    return state => state[moduleDef.name] as ExtractReducerState<IStoreModuleDef<TState>['reducer']>;
+
+export function defineFeatureSelector<TState, TReducer extends IReducer<TState>>(
+    featureName: string,
+    _reducer: TReducer,
+): (store: Record<string, unknown>) => ExtractReducerState<TReducer> {
+    return store => store[featureName] as ExtractReducerState<TReducer>;
 }
