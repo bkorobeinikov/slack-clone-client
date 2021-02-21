@@ -1,5 +1,11 @@
-import { appStore } from '@app/core';
+import { featureDef } from './def';
 
-import { moduleDef } from './def';
+import { AuthView } from './components';
+import { saga } from './store/sagas';
 
-appStore.addFeature(moduleDef);
+const feature = featureDef.create({
+    saga: saga,
+    viewComponent: AuthView,
+});
+
+export { feature };

@@ -1,21 +1,22 @@
-import { defineMsg, msgPayload } from '@app/store';
+import { defineMsg, withPayload } from '@app/store';
+import { featureDef } from '../def';
 
-import { IAppConfig, IAppInitializeOptions } from './models';
+import { IAppConfig, IAppInitializeOptions } from '../models';
 
 export const initializeAppAction = defineMsg(
-    'app/core/initialize_app',
-    msgPayload<{
+    featureDef,
+    'initialize_app',
+    withPayload<{
         options: IAppInitializeOptions;
     }>(),
 );
+
 export const initializeAppDoneEvent = defineMsg(
-    'app/core/initialize_app_done',
-    msgPayload<{
+    featureDef,
+    'initialize_app_done',
+    withPayload<{
         appConfig: IAppConfig;
     }>(),
 );
 
-export const featureBootstrapBeganEvent = defineMsg('app/core/feature_bootstrap_began', msgPayload<{ featureName: string }>());
-export const featureBootstrapDoneEvent = defineMsg('app/core/feature_bootstrap_done', msgPayload<{ featureName: string }>());
-
-export const appReadyEvent = defineMsg('app/core/app_ready', msgPayload());
+export const appReadyEvent = defineMsg(featureDef, 'app/core/app_ready', withPayload());

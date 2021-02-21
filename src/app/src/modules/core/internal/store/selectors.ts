@@ -1,12 +1,10 @@
-import { createSelector, defineFeatureSelector } from '@app/store';
+import { createSelector, createFeatureSelector } from '@app/store';
 
-import { FEATURE_COMMON_CORE_NAME } from '../constants';
-import { reducer } from './reducer';
+import { featureDef } from '../def';
 
-const getState = defineFeatureSelector(FEATURE_COMMON_CORE_NAME, reducer);
+const getState = createFeatureSelector(featureDef);
 
 const getAppConfig = createSelector(getState, state => state.appConfig);
-const getBootstrapping = createSelector(getState, state => state.bootstrapping);
 const getIsAppReady = createSelector(getState, state => state.ready);
 
-export { getAppConfig, getBootstrapping, getIsAppReady };
+export { getAppConfig, getIsAppReady };

@@ -4,7 +4,7 @@
 
 import { compose } from 'redux';
 
-const createDynamicMiddlewares = () => {
+function createStoreMiddlwareMngr() {
     let allDynamicMiddlewares = [];
     let allApplyedDynamicMiddlewares = [];
     let store;
@@ -46,6 +46,6 @@ const createDynamicMiddlewares = () => {
         removeMiddleware,
         resetMiddlewares,
     };
-};
+}
 
-export { createDynamicMiddlewares };
+export { createStoreMiddlwareMngr };

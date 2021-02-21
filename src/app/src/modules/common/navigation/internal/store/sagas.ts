@@ -1,17 +1,16 @@
 import { createBrowserHistory } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 
-import { msgSaga } from '@app/store';
-import { put, SagaResult, takeEvery } from '@app/store/effects';
+import { createJob, useJob } from '@app/store';
+import { call, SagaResult } from '@app/store/effects';
 import { defineModule } from '@app/store/utils';
 
 import { appStore } from '@app/core';
-import { featureBootstrapBeganEvent, featureBootstrapDoneEvent, initializeAppDoneEvent } from '@app/core/messages';
 
 import { runtimeHistory } from './utils';
-import { FEATURE_COMMON_NAVIGATION_NAME } from '../constants';
+import { initializationJobs } from '@app/core/internal/store/jobs';
 
-const initializeAppDone = msgSaga(initializeAppDoneEvent, function* () {
+const initializeJob = createJob(initializationJobs, function* () {
     runtimeHistory.history = createBrowserHistory({});
 
     const historyReducer = connectRouter(runtimeHistory.history);
@@ -24,13 +23,11 @@ const initializeAppDone = msgSaga(initializeAppDoneEvent, function* () {
     appStore.addFeature(historyModuleDef);
     appStore.addMiddlware(routerMiddleware(runtimeHistory.history));
 
-    yield put(featureBootstrapDoneEvent({ featureName: FEATURE_COMMON_NAVIGATION_NAME }));
+    yield call(() => 1);
 });
 
 function* saga(): SagaResult<void> {
-    yield put(featureBootstrapBeganEvent({ featureName: FEATURE_COMMON_NAVIGATION_NAME }));
-
-    yield takeEvery(initializeAppDoneEvent, initializeAppDone);
+    yield useJob(initializationJobs, initializeJob);
 }
 
 export { saga };

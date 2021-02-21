@@ -1,16 +1,19 @@
-import { defineMsg, msgPayload } from '@app/store';
-import { IRouteDef } from './models/routing';
+import { AnyRoute, defineMsg, withPayload } from '@app/store';
+
+import { featureDef } from '../def';
 
 export const registerRouteAction = defineMsg(
-    'app/common/navigation/register_route',
-    msgPayload<{
-        routes: IRouteDef[];
+    featureDef,
+    'register_route',
+    withPayload<{
+        routes: AnyRoute[];
     }>(),
 );
 
-export const navigateTo = defineMsg(
-    'app/common/navigation/navigate_to',
-    msgPayload<{
+export const navigateToAction = defineMsg(
+    featureDef,
+    'navigate_to',
+    withPayload<{
         path: string;
     }>(),
 );

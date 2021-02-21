@@ -1,7 +1,11 @@
 import { createStore } from '@app/store/utils';
 
-import { moduleDef } from './def';
+import { featureDef } from './def';
+import { reducer } from './store/reducer';
+import { saga } from './store/sagas';
 
-const appStore = createStore({ features: [moduleDef] });
+const feature = featureDef.create({ reducer, saga });
+
+const appStore = createStore({ features: [feature] });
 
 export { appStore };

@@ -1,3 +1,5 @@
+import { IFeatureDef } from './feature';
+
 interface IMessage<TType, TPayload> {
     readonly type: TType;
     readonly payload: Readonly<TPayload>;
@@ -9,6 +11,7 @@ interface IMessageDefReadOnly<TType, _TPayload> {
 
 interface IMessageDef<TType, TPayload> extends IMessageDefReadOnly<TType, TPayload> {
     (payload: TPayload): IMessage<TType, TPayload>;
+    readOnly(): IMessageDefReadOnly<TType, TPayload>;
 }
 
 type AnyMessageDef = IMessageDefReadOnly<string, unknown>;
@@ -26,20 +29,22 @@ type ExtractMessage<TMessageDef> = TMessageDef extends Array<infer TInnerDefs>
     ? IMessage<TType, TPayload>
     : never;
 
-const defineMsg = <TType, TPayload>(type: TType, _payload: TPayload): IMessageDef<TType, TPayload> => {
-    const msgCreator = (payload: TPayload) => ({ type, payload });
-    msgCreator.type = type;
+function defineMsg<TFeatureName extends `[${string}]`, TState, TType extends string, TPayload>(
+    featureDef: IFeatureDef<TFeatureName, TState>,
+    type: `${TType}`,
+    _payload: TPayload,
+): IMessageDef<`${TFeatureName} ${TType}`, TPayload> {
+    const finalType = (featureDef.featureName + ' ' + type) as `${TFeatureName} ${TType}`;
+    const msgCreator = (payload: TPayload) => ({ type: finalType, payload });
+    msgCreator.type = finalType;
+    msgCreator.readOnly = (): IMessageDefReadOnly<`${TFeatureName} ${TType}`, TPayload> => ({
+        type: finalType,
+    });
 
     return msgCreator;
-};
-
-const msgPayload = <TPayload = Record<string, never>>(_payload?: TPayload): TPayload => null as never;
-
-function asReadOnly<TType, TPayload>(msgDef: IMessageDef<TType, TPayload>): IMessageDefReadOnly<TType, TPayload> {
-    return {
-        type: msgDef.type,
-    };
 }
+
+const withPayload = <TPayload = Record<string, never>>(_payload?: TPayload): TPayload => null as never;
 
 function ofMsgDef<TDef extends AnyMessageDef>(msgDef: TDef, msg: AnyMessage): msg is ExtractMessage<TDef> {
     if (msg.type === msgDef.type) {
@@ -58,16 +63,4 @@ function msgSaga(
     return handler;
 }
 
-export {
-    AnyMessageDef,
-    AnyMessage,
-    IMessageDefReadOnly,
-    IMessageDef,
-    ExtractMessage,
-    IMessage,
-    defineMsg,
-    msgPayload,
-    asReadOnly,
-    msgSaga,
-    ofMsgDef,
-};
+export { AnyMessageDef, AnyMessage, IMessageDefReadOnly, IMessageDef, ExtractMessage, IMessage, defineMsg, withPayload, msgSaga, ofMsgDef };

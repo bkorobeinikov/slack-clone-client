@@ -1,5 +1,5 @@
-import { defineRoute, routeParams } from '@app/common/navigation/routing';
+import { defineRoute, withParams } from '@app/store';
 
-import { ROUTING_INITIAL_COMPONENT_NAME } from './constants';
+import { featureDef } from './def';
 
-export const chatRouteDef = defineRoute({ path: '/chat', componentName: ROUTING_INITIAL_COMPONENT_NAME }, routeParams());
+export const chatRouteDef = defineRoute(featureDef, { path: '/chat' }, withParams());

@@ -1,1 +1,1 @@
-export { rootViewDef } from './internal/def';
+export { rootView } from './internal/init';

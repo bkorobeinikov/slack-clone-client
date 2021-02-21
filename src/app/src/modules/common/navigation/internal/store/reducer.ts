@@ -1,36 +1,34 @@
-import { defineReducer, mutate } from '@app/store';
+import { createReducer, mutate } from '@app/store';
 
 import keyBy from 'lodash/keyBy';
 
+import { featureDef } from '../def';
 import { registerRouteAction } from './messages';
-import { IRouteDef } from './models';
 
-interface IState {
-    routes: IRouteDef[];
-}
+const reducer = createReducer(
+    featureDef,
+    {
+        routes: [],
+    },
+    [
+        mutate(registerRouteAction, (state, msg) => {
+            const { routes: routesToAdd } = msg.payload;
 
-const initialState: IState = {
-    routes: [],
-};
+            const routes = [...state.routes];
+            const routesByPath = keyBy(routes, r => r.path);
 
-const reducer = defineReducer(initialState, [
-    mutate(registerRouteAction, (state, msg) => {
-        const { routes: routesToAdd } = msg.payload;
-
-        const routes = [...state.routes];
-        const routesByPath = keyBy(routes, r => r.path);
-
-        for (const routeToAdd of routesToAdd) {
-            if (!routesByPath[routeToAdd.path]) {
-                routes.push(routeToAdd);
+            for (const routeToAdd of routesToAdd) {
+                if (!routesByPath[routeToAdd.path]) {
+                    routes.push(routeToAdd);
+                }
             }
-        }
 
-        return {
-            ...state,
-            routes,
-        };
-    }),
-]);
+            return {
+                ...state,
+                routes,
+            };
+        }),
+    ],
+);
 
-export { reducer, IState };
+export { reducer };

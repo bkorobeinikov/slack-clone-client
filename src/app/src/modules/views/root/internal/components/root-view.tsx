@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { defineMsg, msgPayload } from '@app/store';
+import { defineMsg, withPayload } from '@app/store';
 
 import '@app/ui/styles';
 import { componentRegistry } from '@app/ui';
@@ -12,7 +12,7 @@ import { getIsAppReady } from '@app/core/selectors';
 import { getRoutes } from '@app/common/navigation/selectors';
 import { NavRouter } from '@app/common/navigation/components';
 
-const created = defineMsg('CREATEDRoot', msgPayload());
+const created = defineMsg('CREATEDRoot', withPayload());
 
 const RootView = React.memo(() => {
     console.log(created);

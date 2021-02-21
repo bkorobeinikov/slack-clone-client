@@ -1,3 +1,7 @@
-export { defineMsg, msgPayload, asReadOnly, msgSaga, ofMsgDef } from './internal/message';
-export { defineReducer, combineReducers, mutate } from './internal/reducer';
-export { defineFeatureSelector, createSelector } from './internal/selectors';
+export { defineMsg, withPayload, msgSaga, ofMsgDef } from './internal/message';
+export { createReducer, combineReducers, mutate } from './internal/reducer';
+export { createFeatureSelector, createSelector } from './internal/selectors';
+
+export * from './internal/feature';
+export * from './internal/jobs';
+export * from './internal/routing';

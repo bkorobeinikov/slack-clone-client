@@ -1,11 +1,3 @@
-import { defineModule } from '@app/store/utils';
+import { defineViewFeature, withState } from '@app/store';
 
-import { FEATURE_VIEWS_AUTH_NAME } from './constants';
-import { saga } from './store/sagas';
-
-const moduleDef = defineModule({
-    name: FEATURE_VIEWS_AUTH_NAME,
-    saga: saga,
-});
-
-export { moduleDef };
+export const featureDef = defineViewFeature({ featureName: 'app/views/auth' }, withState());

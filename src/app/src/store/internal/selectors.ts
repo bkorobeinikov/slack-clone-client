@@ -1,12 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { ExtractReducerState, IReducer } from './reducer';
+import { IFeatureDef } from './feature';
 
 export { createSelector };
 
-export function defineFeatureSelector<TState, TReducer extends IReducer<TState>>(
-    featureName: string,
-    _reducer: TReducer,
-): (store: Record<string, unknown>) => ExtractReducerState<TReducer> {
-    return store => store[featureName] as ExtractReducerState<TReducer>;
+export function createFeatureSelector<FeatureName extends string, TState>(
+    featureDef: IFeatureDef<FeatureName, TState>,
+): (store: Record<string, unknown>) => TState {
+    return store => store[featureDef.featureName] as TState;
 }

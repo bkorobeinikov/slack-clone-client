@@ -1,11 +1,8 @@
-import { defineModule } from '@app/store/utils';
+import { defineViewFeature, withState } from '@app/store';
 
-import { saga } from './store/sagas';
-
-const rootViewDef = defineModule({
-    name: 'app.views.root',
-    reducer: null,
-    saga: saga,
-});
-
-export { rootViewDef };
+export const rootViewDef = defineViewFeature(
+    {
+        featureName: 'app.views.root',
+    },
+    withState(),
+);

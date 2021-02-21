@@ -1,13 +1,12 @@
-import { defineModule } from '@app/store/utils';
+import { AnyRoute, defineFeature, withState } from '@app/store';
 
-import { FEATURE_COMMON_NAVIGATION_NAME } from './constants';
-import { reducer } from './store/reducer';
-import { saga } from './store/sagas';
+export interface IState {
+    routes: AnyRoute[];
+}
 
-const moduleDef = defineModule({
-    name: FEATURE_COMMON_NAVIGATION_NAME,
-    reducer: reducer,
-    saga: saga,
-});
-
-export { moduleDef };
+export const featureDef = defineFeature(
+    {
+        featureName: 'app/common/navigation',
+    },
+    withState<IState>(),
+);

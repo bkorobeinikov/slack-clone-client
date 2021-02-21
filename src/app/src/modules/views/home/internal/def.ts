@@ -1,7 +1,8 @@
-import { defineModule } from '@app/store/utils';
+import { defineViewFeature, withState } from '@app/store';
 
-const moduleDef = defineModule({
-    name: 'app.views.home',
-});
-
-export { moduleDef };
+export const featureDef = defineViewFeature(
+    {
+        featureName: 'app.views.home',
+    },
+    withState(),
+);

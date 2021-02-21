@@ -1,5 +1,9 @@
-import { appStore } from '@app/core';
+import { HomeView } from './components';
 
-import { moduleDef } from './def';
+import { featureDef } from './def';
 
-appStore.addFeature(moduleDef);
+const feature = featureDef.create({
+    viewComponent: HomeView,
+});
+
+export { feature };

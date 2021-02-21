@@ -1,11 +1,8 @@
-import { defineModule } from '@app/store/utils';
+import { defineViewFeature, withState } from '@app/store';
 
-import { FEATURE_VIEWS_CHAT_NAME } from './constants';
-
-const moduleDef = defineModule({
-    name: FEATURE_VIEWS_CHAT_NAME,
-    reducer: null,
-    saga: null,
-});
-
-export { moduleDef };
+export const featureDef = defineViewFeature(
+    {
+        featureName: 'app/views/chat',
+    },
+    withState(),
+);

@@ -1,5 +1,8 @@
-import { appStore } from '@app/core';
+import { featureDef } from './def';
+import { reducer } from './store/reducer';
+import { saga } from './store/sagas';
 
-import { moduleDef } from './def';
-
-appStore.addFeature(moduleDef);
+export const feature = featureDef.create({
+    reducer: reducer,
+    saga: saga,
+});

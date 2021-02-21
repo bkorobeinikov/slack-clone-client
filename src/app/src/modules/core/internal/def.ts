@@ -1,13 +1,18 @@
-import { defineModule } from '@app/store/utils';
+import { defineFeature, withState } from '@app/store';
 
-import { FEATURE_COMMON_CORE_NAME } from './constants';
-import { reducer } from './store/reducer';
-import { saga } from './store/sagas';
+import { IAppConfig } from './models';
 
-const moduleDef = defineModule({
-    name: FEATURE_COMMON_CORE_NAME,
-    reducer: reducer,
-    saga: saga,
-});
+interface IState {
+    appConfig: IAppConfig;
 
-export { moduleDef };
+    ready: boolean;
+}
+
+const featureDef = defineFeature(
+    {
+        featureName: 'app/core',
+    },
+    withState<IState>(),
+);
+
+export { featureDef, IState };

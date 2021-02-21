@@ -1,4 +1,5 @@
 import { Reducer, combineReducers as reduxCombineReducers } from 'redux';
+import { IFeatureDef } from './feature';
 
 import { AnyMessage, AnyMessageDef, ExtractMessage } from './message';
 
@@ -19,7 +20,11 @@ type ExtractReducerState<TReducer> = TReducer extends IReducer<infer TState> ? T
 
 type Exact<T, U> = T extends U ? (Exclude<keyof T, keyof U> extends never ? T : never) : never;
 
-function defineReducer<TState>(initialState: TState, mutators: IReducerMutator<TState, AnyMessageDef>[]): IReducer<TState> {
+function createReducer<TFeatureName extends string, TState>(
+    _featureDef: IFeatureDef<TFeatureName, TState>,
+    initialState: TState,
+    mutators: IReducerMutator<TState, AnyMessageDef>[],
+): IReducer<TState> {
     const map = mutators.reduce((acc: { [msgType: string]: IReducerMutator<TState, AnyMessageDef> }, h) => {
         if (acc[h.msgDef.type.toString()]) {
             // only one handler per MessageDef
@@ -53,4 +58,4 @@ function mutate<TState, TMutateResult, TMsgDef extends AnyMessageDef>(
     };
 }
 
-export { IReducer, IReducersMap, IReducerMutator, ExtractReducerState, defineReducer, combineReducers, mutate };
+export { IReducer, IReducersMap, IReducerMutator, ExtractReducerState, createReducer, combineReducers, mutate };

@@ -1,26 +1,25 @@
 import './shim';
 
-import { defineModule } from '@app/store/utils';
 import { put } from '@app/store/effects';
 
-import { appStore } from '@app/core';
-import { initializeAppAction } from '@app/core/messages';
+import { appStore, initializeAppAction } from '@app/core';
 
-import { chatViewDef } from '@app/views/chat';
-import { authViewDef } from '@app/views/auth';
-import { homeViewDef } from '@app/views/home';
-import { rootViewDef } from '@app/views/root';
+import { chatView } from '@app/views/chat';
+import { authView } from '@app/views/auth';
+import { homeView } from '@app/views/home';
+import { rootView } from '@app/views/root';
+import { defineFeature, withState } from '@app/store';
 
-appStore.addFeature(chatViewDef);
-appStore.addFeature(authViewDef);
-appStore.addFeature(homeViewDef);
-appStore.addFeature(rootViewDef);
+appStore.addFeature(chatView);
+appStore.addFeature(authView);
+appStore.addFeature(homeView);
+appStore.addFeature(rootView);
 
-appStore.addFeature(
-    defineModule({
-        name: 'app.clients.web',
-        saga: function* () {
-            yield put(initializeAppAction({ options: {} }));
-        },
-    }),
-);
+const featureDef = defineFeature({ featureName: 'app.clients.web' }, withState());
+const feature = featureDef.create({
+    saga: function* () {
+        yield put(initializeAppAction({ options: {} }));
+    },
+});
+
+appStore.addFeature(feature);
